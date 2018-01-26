@@ -6,8 +6,8 @@ SECRET_NUMBER = rand(101)
 get '/' do
   game = Game.new()
   guess = params[:guess].to_i
-  game.check_guess(guess)
-  game.decrease_live(guess)
+  game.check_guess(guess) if guess.between?(1,100)
+  game.decrease_live(guess) if guess.between?(1,100)
   erb :index, :locals => {:message => game.message, :background_color => game.color, :lives => Game.lives() }
 end
 
@@ -17,7 +17,8 @@ class Game
   @color
   @@lives = 5
   def initialize
-
+    @message = "Guess the secret number between 0 and 100!"
+    @color = "white"
   end
 
   def self.lives
